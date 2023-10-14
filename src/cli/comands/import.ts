@@ -1,7 +1,7 @@
-import { ICliCommand } from './interfaces/ICliComand';
+import { ICliCommand } from './interfaces/ICliComand.js';
 import chalk from 'chalk';
-import { City, Facilities, HousingType, UserType } from '../../types/enums';
-import { Offer } from '../../types/offer';
+import { City, Facilities, HousingType, UserType } from '../../types/enums.js';
+import { Offer } from '../../types/offer.js';
 import { readFileSync } from 'node:fs';
 
 export default class ImportCommand implements ICliCommand {

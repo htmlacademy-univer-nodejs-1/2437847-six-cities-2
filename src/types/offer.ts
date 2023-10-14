@@ -1,4 +1,4 @@
-import { City, Facilities, HousingType } from './enums';
+import { City, Facilities, HousingType } from './enums.js';
 import { User } from './user';
 
 export type Coordinates = {

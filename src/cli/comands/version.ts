@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
-import { ICliCommand } from './interfaces/ICliComand';
+import { ICliCommand } from './interfaces/ICliComand.js';
 import path from 'node:path';
-import { homedir } from 'os';
+import { homedir } from 'node:os';
 
 export default class VersionCommand implements ICliCommand {
   public readonly name = '--version';
