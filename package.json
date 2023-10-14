@@ -16,6 +16,9 @@
     "clean": "rimraf dist",
     "ts": "ts-node"
   },
+  "dependencies": {
+    "chalk": "^5.3.0"
+  },
   "devDependencies": {
     "@types/node": "18.16.3",
     "@typescript-eslint/eslint-plugin": "5.46.0",
