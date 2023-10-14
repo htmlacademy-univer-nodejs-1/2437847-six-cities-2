@@ -1,4 +1,4 @@
-import { ICliCommand } from './interfaces/ICliComand';
+import { ICliCommand } from './interfaces/ICliComand.js';
 import chalk from 'chalk';
 
 export default class HelpCommand implements ICliCommand {
