@@ -1,4 +1,4 @@
-import { ICliCommand } from "./comands/interfaces/ICliComand";
+import { ICliCommand } from './comands/interfaces/ICliComand';
 
 type ParsedCommand = {
   [key: string]: string[];
@@ -6,14 +6,14 @@ type ParsedCommand = {
 
 export default class CLIApplication {
   private commands: { [propertyName: string]: ICliCommand } = {};
-  private defaultCommand = "--help";
+  private defaultCommand = '--help';
 
   private parseCommand(cliArguments: string[]): ParsedCommand {
     const parsedCommand: ParsedCommand = {};
-    let command = "";
+    let command = '';
 
     return cliArguments.reduce((acc, item) => {
-      if (item.startsWith("--")) {
+      if (item.startsWith('--')) {
         acc[item] = [];
         command = item;
       } else if (command && item) {

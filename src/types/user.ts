@@ -1,4 +1,4 @@
-import { UserType } from "./enums";
+import { UserType } from './enums';
 
 export type User = {
   name: string;

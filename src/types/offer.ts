@@ -1,5 +1,5 @@
-import { City, Facilities, HousingType } from "./enums";
-import { User } from "./user";
+import { City, Facilities, HousingType } from './enums';
+import { User } from './user';
 
 export type Coordinates = {
   latitude: number;

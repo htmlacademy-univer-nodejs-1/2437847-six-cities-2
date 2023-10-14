@@ -1,11 +1,11 @@
-import { ICliCommand } from "./interfaces/ICliComand";
-import chalk from "chalk";
-import { City, Facilities, HousingType, UserType } from "../../types/enums";
-import { Offer } from "../../types/offer";
-import { readFileSync } from "node:fs";
+import { ICliCommand } from './interfaces/ICliComand';
+import chalk from 'chalk';
+import { City, Facilities, HousingType, UserType } from '../../types/enums';
+import { Offer } from '../../types/offer';
+import { readFileSync } from 'node:fs';
 
 export default class ImportCommand implements ICliCommand {
-  public readonly name = "--import";
+  public readonly name = '--import';
 
   public execute(filename: string): void {
     try {
@@ -20,9 +20,9 @@ export default class ImportCommand implements ICliCommand {
   }
 
   private readOffers(filename: string): Offer[] {
-    const data = readFileSync(filename, { encoding: "utf-8" });
-    const offers = data?.split("\n").filter((row) => row.trim() !== "");
-    const offersRows = offers?.map((row) => row.split("\t"));
+    const data = readFileSync(filename, { encoding: 'utf-8' });
+    const offers = data?.split('\n').filter((row) => row.trim() !== '');
+    const offersRows = offers?.map((row) => row.split('\t'));
     return offersRows.map(
       ([
         title,
@@ -53,7 +53,7 @@ export default class ImportCommand implements ICliCommand {
         publicationDate: new Date(publicationDate),
         city: city as unknown as City,
         preview: preview,
-        images: images.split(","),
+        images: images.split(','),
         isPremium: premium as unknown as boolean,
         isFavourite: favorite as unknown as boolean,
         rating: parseFloat(rating),
@@ -62,7 +62,7 @@ export default class ImportCommand implements ICliCommand {
         guestCount: parseInt(guestCount, 10),
         cost: parseInt(cost, 10),
         facilities: facilities
-          .split(",")
+          .split(',')
           .map((x) => x as unknown as Facilities),
         author: {
           name: authorName,
