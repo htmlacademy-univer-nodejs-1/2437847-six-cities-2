@@ -8,10 +8,7 @@ export default class VersionCommand implements ICliCommand {
 
   private readVersion(): string {
     const cwd = path.resolve(homedir(), '2437847-six-cities-2');
-    const contentPageJSON = readFileSync(
-      path.resolve(cwd, './package.json'),
-      'utf-8',
-    );
+    const contentPageJSON = readFileSync(path.resolve(cwd, './package.json'), 'utf-8');
     const content = JSON.parse(contentPageJSON);
     return content.version;
   }
