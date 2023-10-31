@@ -1,6 +1,6 @@
 import { ICliCommand } from './interfaces/ICliComand.js';
 import chalk from 'chalk';
-import { FileReader } from '../../services/fileService.js';
+import { FileReader } from '../../core/file/fileService.js';
 
 export default class ImportCommand implements ICliCommand {
   public readonly name = '--import';

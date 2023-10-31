@@ -1,7 +1,7 @@
 import { ICliCommand } from './interfaces/ICliComand.js';
 import { MockData } from '../../types/mockData.js';
-import { FileWriter } from '../../services/fileService.js';
-import { generateOffer } from '../../services/offers.js';
+import { FileWriter } from '../../core/file/file.service.js';
+import { generateOffer } from '../../core/helpers/offers.js';
 import got from 'got';
 
 export default class GenerateCommand implements ICliCommand {
