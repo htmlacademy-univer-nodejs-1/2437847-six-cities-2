@@ -1,8 +1,8 @@
-import { MockData } from '../types/mockData.js';
+import { MockData } from '../../types/mockData.js';
 import { generateRandomNumber, getRandomItem, getRandomItems } from './random.js';
-import { City, Facilities, HousingType, UserType } from '../types/enums.js';
+import { City, Facilities, HousingType, UserType } from '../../types/enums.js';
 import dayjs from 'dayjs';
-import { Offer } from '../types/offer.js';
+import { Offer } from '../../types/offer.js';
 
 const FIRST_WEEK_DAY = 1;
 const LAST_WEEK_DAY = 7;
