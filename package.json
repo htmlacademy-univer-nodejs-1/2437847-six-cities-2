@@ -19,6 +19,8 @@
     "mock:server": "json-server ./mocks/mock-server-data.json --port 3012"
   },
   "dependencies": {
+    "@typegoose/typegoose": "11.1.0",
+    "mongoose": "7.1.1",
     "chalk": "^5.3.0",
     "dayjs": "^1.11.10",
     "got": "12.5.3",

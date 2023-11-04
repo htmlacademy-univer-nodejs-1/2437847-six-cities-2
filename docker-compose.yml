@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  db:
+    image: mongo:4.2
+    restart: always
+    container_name: six-cities_mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./.mongodb/:/data/db

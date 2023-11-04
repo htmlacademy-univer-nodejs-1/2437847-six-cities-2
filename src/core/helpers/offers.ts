@@ -19,7 +19,7 @@ const getAllValuesFromEnum = (enumObject: object): string[] =>
   Object.values(enumObject).filter((value) => isNaN(Number(value)));
 
 export const generateOffer = (mockData: MockData): string => {
-  const name = getRandomItem<string>(mockData.names);
+  const title = getRandomItem<string>(mockData.names);
   const description = getRandomItem<string>(mockData.descriptions);
   const publicationDate = dayjs().subtract(generateRandomNumber(FIRST_WEEK_DAY, LAST_WEEK_DAY), 'day').toISOString();
   const city = getRandomItem(getAllValuesFromEnum(City));
@@ -31,7 +31,7 @@ export const generateOffer = (mockData: MockData): string => {
   const housingType = getRandomItem(getAllValuesFromEnum(HousingType));
   const roomCount = generateRandomNumber(MIN_COUNT_ROOM, MAX_COUNT_ROOM);
   const guestCount = generateRandomNumber(MIN_GUESTS_NUMBER, MAX_GUESTS_NUMBER);
-  const price = generateRandomNumber(MIN_RENTAL_COST, MAX_RENTAL_COST);
+  const cost = generateRandomNumber(MIN_RENTAL_COST, MAX_RENTAL_COST);
   const facilities = getRandomItems(getAllValuesFromEnum(Facilities));
   const offerAuthorName = getRandomItem<string>(mockData.users.names);
   const offerAuthorAvatar = getRandomItem<string>(mockData.users.avatars);
@@ -43,7 +43,7 @@ export const generateOffer = (mockData: MockData): string => {
   const longitude = getRandomItem<number>(mockData.coordinates.longitude);
 
   return [
-    name,
+    title,
     description,
     publicationDate,
     city,
@@ -55,7 +55,6 @@ export const generateOffer = (mockData: MockData): string => {
     housingType,
     roomCount,
     guestCount,
-    price,
     facilities,
     offerAuthorName,
     offerAuthorAvatar,
@@ -65,6 +64,7 @@ export const generateOffer = (mockData: MockData): string => {
     commentsCount,
     latitude,
     longitude,
+    cost,
   ].join('\t');
 };
 
