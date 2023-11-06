@@ -175,7 +175,7 @@ paths:
 
     post:
       tags:
-        - Favourites
+        - Comments
       summary: Create a new comment for an offer
       parameters:
         - name: offerId
@@ -225,7 +225,7 @@ paths:
 
     delete:
       tags:
-        - Offers
+        - Favourites
       summary: Remove an offer from favorites
       description: Remove an offer from the user's list of favorites.
       parameters:

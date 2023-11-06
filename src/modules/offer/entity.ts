@@ -19,7 +19,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public description!: string;
 
-  @prop({ required: true })
+  @prop({ required: false })
   public publicationDate!: Date;
 
   @prop({ required: true, enum: City })
@@ -34,11 +34,11 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public isPremium!: boolean;
 
-  @prop({ required: true })
-  public isFavourite!: boolean;
+  @prop({ required: false, default: 0 })
+  public ratingNumerator!: number;
 
-  @prop({ required: true })
-  public rating!: number;
+  @prop({ required: false, default: 0 })
+  public ratingDenominator!: number;
 
   @prop({ required: true, enum: HousingType })
   public housingType!: HousingType;
@@ -58,11 +58,15 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true, ref: UserEntity })
   public author!: Ref<UserEntity>;
 
-  @prop({ required: true })
+  @prop({ required: false, default: 0 })
   public commentsCount!: number;
 
   @prop({ required: true, allowMixed: Severity.ALLOW })
   public coordinates!: Coordinates;
+
+  public get rating(): number {
+    return this.ratingDenominator === 0 ? 0 : this.ratingNumerator / this.ratingDenominator;
+  }
 }
 
 export const OfferModel = getModelForClass(OfferEntity);

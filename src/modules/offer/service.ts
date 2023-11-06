@@ -23,4 +23,25 @@ export default class OfferService implements OfferServiceInterface {
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel.findById(offerId).exec();
   }
+
+  public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, {
+        $inc: {
+          commentCount: 1,
+        },
+      })
+      .exec();
+  }
+
+  public async addRating(offerId: string, rating: number): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, {
+        $inc: {
+          ratingNumerator: rating,
+          ratingDenominator: 1,
+        },
+      })
+      .exec();
+  }
 }
