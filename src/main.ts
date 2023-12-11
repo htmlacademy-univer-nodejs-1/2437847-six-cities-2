@@ -5,7 +5,7 @@ import { AppComponents } from './types/appComponents.js';
 import { createRestApplicationContainer } from './rest/container.js';
 import { createUserContainer } from './modules/user/container.js';
 import { createOfferContainer } from './modules/offer/container.js';
-import { createCommentContainer } from './modules/comments/comtainer.js';
+import { createCommentContainer } from './modules/comments/container.js';
 
 async function bootstrap() {
   const container = Container.merge(

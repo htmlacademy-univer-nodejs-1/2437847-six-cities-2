@@ -8,6 +8,7 @@ import { LoggerInterface } from '../../core/logger/logger.interface.js';
 import { UserType } from '../../types/enums.js';
 import { ConfigInterface } from '../../core/config/config.interface.js';
 import { RestSchema } from '../../core/config/rest.schema.js';
+import { OfferEntity } from '../offer/entity.js';
 
 @injectable()
 export default class UserService implements UserServiceInterface {
@@ -39,5 +40,22 @@ export default class UserService implements UserServiceInterface {
     }
 
     return this.create(dto);
+  }
+
+  public addToFavoritesById(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[] | null> {
+    return this.userModel.findByIdAndUpdate(userId, { $push: { favorite: offerId }, new: true });
+  }
+
+  public removeFromFavoritesById(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[] | null> {
+    return this.userModel.findByIdAndUpdate(userId, { $pull: { favorite: offerId }, new: true });
+  }
+
+  public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
+    const offers = await this.userModel.findById(userId).select('favorite');
+    if (!offers) {
+      return [];
+    }
+
+    return this.userModel.find({ _id: { $in: offers } }).populate('offerId');
   }
 }
