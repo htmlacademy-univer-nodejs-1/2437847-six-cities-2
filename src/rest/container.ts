@@ -8,6 +8,8 @@ import { DatabaseClientInterface } from '../core/db.client/db.interface.js';
 import MongoClientService from '../core/db.client/mongo.service.js';
 import { AppComponents } from '../types/appComponents.js';
 import Application from './app.js';
+import ExceptionFilter from './exceptions/exceptionFilter.js';
+import { ExceptionFilterInterface } from './exceptions/exeptionFilter.interface';
 
 export function createRestApplicationContainer() {
   const container = new Container();
@@ -17,6 +19,10 @@ export function createRestApplicationContainer() {
   container
     .bind<DatabaseClientInterface>(AppComponents.DatabaseClientInterface)
     .to(MongoClientService)
+    .inSingletonScope();
+  container
+    .bind<ExceptionFilterInterface>(AppComponents.ExceptionFilterInterface)
+    .to(ExceptionFilter)
     .inSingletonScope();
 
   return container;

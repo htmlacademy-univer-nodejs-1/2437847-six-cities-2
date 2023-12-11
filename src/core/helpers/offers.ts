@@ -37,7 +37,6 @@ export const generateOffer = (mockData: MockData): string => {
   const offerAuthorAvatar = getRandomItem<string>(mockData.users.avatars);
   const offerAuthorType = getRandomItem(getAllValuesFromEnum(UserType));
   const offerAuthorNameEmail = getRandomItem<string>(mockData.users.emails);
-  const offerAuthorNamePassword = getRandomItem<string>(mockData.users.passwords);
   const commentsCount = generateRandomNumber(1, 10);
   const latitude = getRandomItem<number>(mockData.coordinates.latitude);
   const longitude = getRandomItem<number>(mockData.coordinates.longitude);
@@ -60,7 +59,6 @@ export const generateOffer = (mockData: MockData): string => {
     offerAuthorAvatar,
     offerAuthorType,
     offerAuthorNameEmail,
-    offerAuthorNamePassword,
     commentsCount,
     latitude,
     longitude,
@@ -88,7 +86,6 @@ export const parseOffer = (offerString: string): Offer => {
     authorAvatar,
     authorType,
     authorEmail,
-    authorPassword,
     commentsCount,
     latitude,
     longitude,
@@ -114,7 +111,6 @@ export const parseOffer = (offerString: string): Offer => {
       avatar: authorAvatar,
       type: authorType as unknown as UserType,
       email: authorEmail,
-      password: authorPassword,
     },
     commentsCount: parseInt(commentsCount, 10),
     coordinates: {

@@ -11,3 +11,9 @@ plugins:
 extends:
   - "plugin:@typescript-eslint/recommended"
   - "htmlacademy/node"
+rules:
+  indent:
+    - error
+    - 2
+    - ignoredNodes:
+        - PropertyDefinition

@@ -4,11 +4,14 @@ import { AppComponents } from '../../types/appComponents.js';
 import { OfferEntity, OfferModel } from './entity.js';
 import { OfferServiceInterface } from './interface.js';
 import OfferService from './service.js';
+import OfferController from './controller.js';
+import { BaseController } from '../../rest/controller/baseController.js';
 
 export function createOfferContainer() {
-  const userContainer = new Container();
-  userContainer.bind<OfferServiceInterface>(AppComponents.UserServiceInterface).to(OfferService).inSingletonScope();
-  userContainer.bind<types.ModelType<OfferEntity>>(AppComponents.UserModel).toConstantValue(OfferModel);
+  const offerController = new Container();
+  offerController.bind<OfferServiceInterface>(AppComponents.OfferServiceInterface).to(OfferService).inSingletonScope();
+  offerController.bind<types.ModelType<OfferEntity>>(AppComponents.OfferModel).toConstantValue(OfferModel);
+  offerController.bind<BaseController>(AppComponents.OfferController).to(OfferController).inSingletonScope();
 
-  return userContainer;
+  return offerController;
 }
