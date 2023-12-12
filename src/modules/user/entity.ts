@@ -15,20 +15,34 @@ export interface UserEntity extends defaultClasses.Base {}
   },
 })
 export class UserEntity extends defaultClasses.TimeStamps implements User {
-  @prop({ unique: true, required: true })
+  @prop({ unique: true, required: true, match: [/^.+@.+$/, 'Email is incorrect'] })
   public email: string;
 
-  @prop({ required: false, default: '' })
+  @prop({ required: false, default: '', match: [/.*\.(?:jpg|png)/, 'Avatar must be jpg or png'] })
   public avatar?: string;
 
-  @prop({ required: true, default: '' })
-  public name: string;
+  @prop({
+    required: true,
+    minlength: [1, 'Min length for username is 1'],
+    maxlength: [15, 'Max length for username is 15'],
+  })
+  public username: string;
+
+  @prop({
+    required: true,
+    type: () => String,
+    enum: UserType,
+  })
+  public type: UserType;
+
+  @prop({
+    required: true,
+    type: () => String,
+  })
+  public favorite!: string[];
 
   @prop({ required: true, default: '' })
   private password?: string;
-
-  @prop({ required: true, default: UserType.STANDART })
-  public type: UserType;
 
   constructor(
     userData: User,
@@ -38,7 +52,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
 
     this.email = userData.email;
     this.avatar = userData.avatar;
-    this.name = userData.name;
+    this.username = userData.username;
     this.type = userData.type;
   }
 

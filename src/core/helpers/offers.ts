@@ -92,13 +92,13 @@ export const parseOffer = (offerString: string): Offer => {
     cost,
   ] = offerRow;
   return {
-    title: title,
+    name: title,
     description: description,
     publicationDate: new Date(publicationDate),
     city: city as unknown as City,
-    preview: preview,
+    previewImage: preview,
     images: images.split(','),
-    isPremium: premium as unknown as boolean,
+    premium: premium as unknown as boolean,
     isFavourite: favorite as unknown as boolean,
     rating: parseFloat(rating),
     housingType: housingType as unknown as HousingType,
@@ -106,8 +106,8 @@ export const parseOffer = (offerString: string): Offer => {
     guestCount: parseInt(guestCount, 10),
     cost: parseInt(cost, 10),
     facilities: facilities.split(',').map((x) => x as unknown as Facilities),
-    author: {
-      name: authorName,
+    userId: {
+      username: authorName,
       avatar: authorAvatar,
       type: authorType as unknown as UserType,
       email: authorEmail,

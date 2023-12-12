@@ -7,13 +7,13 @@ export type Coordinates = {
 };
 
 export type Offer = {
-  title: string;
+  name: string;
   description: string;
   publicationDate: Date;
   city: City;
-  preview: string;
+  previewImage: string;
   images: Array<string>;
-  isPremium: boolean;
+  premium: boolean;
   isFavourite: boolean;
   rating: number;
   housingType: HousingType;
@@ -21,7 +21,7 @@ export type Offer = {
   guestCount: number;
   cost: number;
   facilities: Array<Facilities>;
-  author: User;
+  userId: User;
   commentsCount: number;
   coordinates: Coordinates;
 };
