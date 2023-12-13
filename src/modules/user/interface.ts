@@ -1,13 +1,14 @@
 import { DocumentType } from '@typegoose/typegoose';
-import { CreateUserDto } from './dto.js';
 import { UserEntity } from './entity.js';
-import { OfferEntity } from '../offer/entity.ts';
+import { OfferEntity } from '../offer/entity.js';
+import { CreateUserRequest } from './dto.js';
 
 export interface UserServiceInterface {
-  create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>>;
+  create(dto: CreateUserRequest): Promise<DocumentType<UserEntity>>;
   findByEmail(email: string): Promise<DocumentType<UserEntity> | null>;
-  findOrCreate(dto: CreateUserDto): Promise<DocumentType<UserEntity>>;
+  findOrCreate(dto: CreateUserRequest): Promise<DocumentType<UserEntity>>;
+  findById(userId: string): Promise<DocumentType<UserEntity> | null>;
+  findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]>;
   addToFavoritesById(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[] | null>;
   removeFromFavoritesById(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[] | null>;
-  findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]>;
 }

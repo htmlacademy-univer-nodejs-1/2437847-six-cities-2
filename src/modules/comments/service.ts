@@ -1,26 +1,45 @@
 import { inject, injectable } from 'inversify';
-import { CreateCommentDto } from './dto.js';
 import { DocumentType, types } from '@typegoose/typegoose';
-import { CommentEntity } from './entity.js';
 import { CommentServiceInterface } from './interface.js';
+import { CommentEntity } from './entity.js';
+import { CreateCommentRequest } from './dto.js';
+import { OfferServiceInterface } from '../offer/interface.js';
 import { AppComponents } from '../../types/appComponents.js';
-import { LoggerInterface } from '../../core/logger/logger.interface.js';
+import { SortType } from '../common/types.js';
 
+const COMMENTS_COUNT = 50;
 @injectable()
 export default class CommentService implements CommentServiceInterface {
   constructor(
-    @inject(AppComponents.LoggerInterface) private readonly logger: LoggerInterface,
     @inject(AppComponents.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>,
+    @inject(AppComponents.OfferServiceInterface) private readonly offerService: OfferServiceInterface,
   ) {}
 
-  public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>> {
-    const result = await this.commentModel.create(dto);
-    this.logger.info(`New Comment created: ${dto.text}`);
+  public async createForOffer(dto: CreateCommentRequest): Promise<DocumentType<CommentEntity>> {
+    const comment = await this.commentModel.create(dto);
+    const offerId = dto.offerId;
+    await this.offerService.incComment(offerId);
 
-    return result.populate('userId');
+    const allRating = this.commentModel.find({ offerId }).select('rating');
+    const offer = await this.offerService.findById(offerId);
+
+    const count = offer?.commentsCount ?? 1;
+    const newRating = allRating['rating'] / count;
+    await this.offerService.updateRating(offerId, newRating);
+    return comment.populate('authorId');
   }
 
-  findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[] | null> {
-    return this.commentModel.find({ offerId }).populate('userId');
+  public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[]> {
+    return this.commentModel
+      .find({ offerId })
+      .sort({ createdAt: SortType.DESCENDING })
+      .populate('authorId')
+      .limit(COMMENTS_COUNT);
+  }
+
+  public async deleteByOfferId(offerId: string): Promise<number> {
+    const result = await this.commentModel.deleteMany({ offerId }).exec();
+
+    return result.deletedCount;
   }
 }

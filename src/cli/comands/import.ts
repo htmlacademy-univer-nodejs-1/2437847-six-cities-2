@@ -61,13 +61,13 @@ export default class ImportCommand implements ICliCommand {
 
   private async saveOffer(offer: Offer) {
     const user = await this.userService.findOrCreate({
-      ...offer.author,
+      ...offer.userId,
       password: DEFAULT_USER_PASSWORD,
     });
 
     await this.offerService.create({
       ...offer,
-      author: user.id,
+      userId: user.id,
     });
   }
 }

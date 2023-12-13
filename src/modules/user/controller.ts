@@ -7,19 +7,16 @@ import { BaseController } from '../../rest/controller/baseController.js';
 import { LoggerInterface } from '../../core/logger/logger.interface';
 import { UserServiceInterface } from './interface.js';
 import { AppComponents } from '../../types/appComponents.js';
-import { RestSchema } from '../../core/config/rest.schema';
-import { ConfigInterface } from '../../core/config/config.interface';
 import { HttpMethod } from '../../rest/types/httpMethod.js';
-import { CreateUserDto, LoginUserDto } from './dto.js';
 import { HttpError } from '../../rest/exceptions/httpError.js';
-import { OfferDto } from '../offer/dto.js';
+import { CreateUserRequest, LoginUserRequest } from './dto.js';
+import { OfferResponse } from '../offer/dto.js';
 
 @injectable()
 export default class UserController extends BaseController {
   constructor(
     @inject(AppComponents.LoggerInterface) logger: LoggerInterface,
     @inject(AppComponents.UserServiceInterface) private readonly userService: UserServiceInterface,
-    @inject(AppComponents.ConfigInterface) private readonly configService: ConfigInterface<RestSchema>,
   ) {
     super(logger);
 
@@ -34,7 +31,7 @@ export default class UserController extends BaseController {
   }
 
   public async register(
-    { body }: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>,
+    { body }: Request<Record<string, unknown>, Record<string, unknown>, CreateUserRequest>,
     res: Response,
   ): Promise<void> {
     const user = await this.userService.findByEmail(body.email);
@@ -43,12 +40,12 @@ export default class UserController extends BaseController {
       throw new HttpError(StatusCodes.CONFLICT, `User with email ${body.email} already exists.`, 'UserController');
     }
 
-    const result = await this.userService.create(body, this.configService.get('SALT'));
-    this.created(res, plainToInstance(CreateUserDto, result, { excludeExtraneousValues: true }));
+    const result = await this.userService.create(body);
+    this.created(res, plainToInstance(CreateUserRequest, result, { excludeExtraneousValues: true }));
   }
 
   public async login(
-    { body }: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
+    { body }: Request<Record<string, unknown>, Record<string, unknown>, LoginUserRequest>,
     _res: Response,
   ): Promise<void> {
     const existsUser = await this.userService.findByEmail(body.email);
@@ -69,7 +66,7 @@ export default class UserController extends BaseController {
     _res: Response,
   ): Promise<void> {
     const result = await this.userService.findFavorites(body.userId);
-    this.ok(_res, plainToInstance(OfferDto, result, { excludeExtraneousValues: true }));
+    this.ok(_res, plainToInstance(OfferResponse, result, { excludeExtraneousValues: true }));
   }
 
   public async addFavorite(

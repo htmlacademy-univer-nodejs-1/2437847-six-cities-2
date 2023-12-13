@@ -1,7 +1,7 @@
 import typegoose, { defaultClasses, getModelForClass, Ref, Severity } from '@typegoose/typegoose';
 import { City, Facilities, HousingType } from '../../types/enums.js';
-import { Coordinates } from '../../types/offer.js';
 import { UserEntity } from '../user/entity.js';
+import { Coordinates } from '../../types/offer.js';
 
 const { prop, modelOptions } = typegoose;
 
@@ -13,60 +13,101 @@ export interface OfferEntity extends defaultClasses.Base {}
   },
 })
 export class OfferEntity extends defaultClasses.TimeStamps {
-  @prop({ required: true })
-  public title!: string;
-
-  @prop({ required: true })
-  public description!: string;
-
-  @prop({ required: false })
-  public publicationDate!: Date;
-
-  @prop({ required: true, enum: City })
+  @prop({
+    required: true,
+    type: () => String,
+    enum: City,
+  })
   public city!: City;
 
-  @prop({ required: true })
-  public preview!: string;
-
-  @prop({ required: true, type: String, default: [] })
-  public images!: Array<string>;
-
-  @prop({ required: true })
-  public isPremium!: boolean;
-
-  @prop({ required: false, default: 0 })
-  public ratingNumerator!: number;
-
-  @prop({ required: false, default: 0 })
-  public ratingDenominator!: number;
-
-  @prop({ required: true, enum: HousingType })
-  public housingType!: HousingType;
-
-  @prop({ required: true })
-  public roomCount!: number;
-
-  @prop({ required: true })
-  public guestCount!: number;
-
-  @prop({ required: true })
-  public cost!: number;
-
-  @prop({ required: true, enum: Facilities, type: String, default: [] })
-  public facilities!: Array<Facilities>;
-
-  @prop({ required: true, ref: UserEntity })
-  public author!: Ref<UserEntity>;
-
-  @prop({ required: false, default: 0 })
+  @prop({ default: 0 })
   public commentsCount!: number;
 
-  @prop({ required: true, allowMixed: Severity.ALLOW })
-  public coordinates!: Coordinates;
+  @prop({
+    required: true,
+    min: [100, 'Min cost is 100'],
+    max: [100000, 'Max cost is 100000'],
+  })
+  public cost!: number;
 
-  public get rating(): number {
-    return this.ratingDenominator === 0 ? 0 : this.ratingNumerator / this.ratingDenominator;
-  }
+  @prop({
+    required: true,
+    trim: true,
+    minlength: [20, 'Min length for description is 20'],
+    maxlength: [1024, 'Max length for description is 1024'],
+  })
+  public description!: string;
+
+  @prop({
+    required: true,
+    type: () => String,
+    enum: Facilities,
+  })
+  public facilities!: Facilities[];
+
+  @prop({
+    required: true,
+    min: [1, 'Min count of guests is 1'],
+    max: [10, 'Max count of guests is 10'],
+  })
+  public guestCount!: number;
+
+  @prop({
+    required: true,
+    type: () => String,
+    enum: HousingType,
+  })
+  public housingType!: HousingType;
+
+  @prop({
+    type: () => [String],
+    minCount: [6, 'Images should be 6'],
+    maxCount: [6, 'Images should be 6'],
+  })
+  public images!: string[];
+
+  @prop({
+    required: true,
+    trim: true,
+    minlength: [10, 'Min length for name is 10'],
+    maxlength: [100, 'Max length for name is 15'],
+  })
+  public name!: string;
+
+  @prop({
+    ref: UserEntity,
+    required: true,
+  })
+  public userId!: Ref<UserEntity>;
+
+  @prop({ required: true, default: false })
+  public premium!: boolean;
+
+  @prop({ required: true })
+  public previewImage!: string;
+
+  @prop({ required: true })
+  public publicationDate!: Date;
+
+  @prop({
+    required: true,
+    min: [1, 'Min rating is 1'],
+    max: [5, 'Max rating is 5'],
+  })
+  public rating!: number;
+
+  @prop({
+    required: true,
+    min: [1, 'Min room count is 1'],
+    max: [8, 'Max room count is 8'],
+  })
+  public roomCount!: number;
+
+  @prop({
+    required: true,
+    allowMixed: Severity.ALLOW,
+  })
+  public coordinates!: Coordinates;
 }
 
 export const OfferModel = getModelForClass(OfferEntity);

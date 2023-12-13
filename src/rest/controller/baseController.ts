@@ -1,14 +1,15 @@
 import { injectable } from 'inversify';
 import { StatusCodes } from 'http-status-codes';
 import { Response, Router } from 'express';
-import { Controller } from './controller.interface.js';
-import { Route } from '../types/route.interface.js';
+import { ControllerInterface } from './controller.interface.js';
+import { RouteInterface } from '../types/route.interface.js';
 import { LoggerInterface } from '../../core/logger/logger.interface.js';
+import asyncHandler from 'express-async-handler';
 
 const DEFAULT_CONTENT_TYPE = 'application/json';
 
 @injectable()
-export abstract class BaseController implements Controller {
+export abstract class BaseController implements ControllerInterface {
   private readonly _router: Router;
 
   constructor(protected readonly logger: LoggerInterface) {
@@ -19,8 +20,12 @@ export abstract class BaseController implements Controller {
     return this._router;
   }
 
-  public addRoute(route: Route) {
-    this._router[route.method](route.path, route.handler.bind(this));
+  public addRoute(route: RouteInterface) {
+    const wrapperAsyncHandler = asyncHandler(route.handler.bind(this));
+    const middlewareHandlers = route.middlewares?.map((item) => asyncHandler(item.execute.bind(item)));
+    const allHandlers = middlewareHandlers ? [...middlewareHandlers, wrapperAsyncHandler] : wrapperAsyncHandler;
+
+    this._router[route.method](route.path, allHandlers);
     this.logger.info(`Route registered: ${route.method.toUpperCase()} ${route.path}`);
   }
 
