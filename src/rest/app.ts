@@ -8,6 +8,7 @@ import { DatabaseClientInterface } from '../core/db.client/db.interface.js';
 import express, { Express } from 'express';
 import { ExceptionFilterInterface } from './exceptions/exeptionFilter.interface';
 import { BaseController } from './controller/baseController.js';
+import { AuthenticateMiddleware } from './middleware/authenticate.js';
 
 @injectable()
 export default class Application {
@@ -43,6 +44,8 @@ export default class Application {
 
   private async _initMiddlewares() {
     this.server.use(express.json());
+    const authenticateMiddleware = new AuthenticateMiddleware(this.config.get('JWT_SECRET'));
+    this.server.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
   }
 
   private async _initExceptionFilters() {

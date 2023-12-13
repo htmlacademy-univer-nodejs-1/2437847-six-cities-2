@@ -10,6 +10,8 @@ import { ValidateDtoMiddleware } from '../../rest/middleware/validateRequest.js'
 import CommentResponse, { CreateCommentRequest } from './dto.js';
 import { DocumentExistsMiddleware } from '../../rest/middleware/documentExists.js';
 import { plainToInstance } from 'class-transformer';
+import { PrivateRouteMiddleware } from '../../rest/middleware/privateRoute.js';
+import { ParamsOffer } from '../offer/controller.js';
 
 @injectable()
 export default class CommentController extends BaseController {
@@ -25,14 +27,19 @@ export default class CommentController extends BaseController {
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateDtoMiddleware(CreateCommentRequest),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
     });
   }
 
-  public async create({ body }: Request<object, object, CreateCommentRequest>, res: Response): Promise<void> {
-    const comment = await this.commentService.createForOffer(body);
+  public async create({ body, params, user }: Request<ParamsOffer>, res: Response): Promise<void> {
+    const comment = await this.commentService.createForOffer({
+      ...body,
+      offerId: params.offerId,
+      userId: user.id,
+    });
     this.created(res, plainToInstance(CommentResponse, comment, { excludeExtraneousValues: true }));
   }
 }

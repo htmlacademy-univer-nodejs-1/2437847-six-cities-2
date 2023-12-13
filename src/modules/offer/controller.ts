@@ -14,6 +14,7 @@ import { DocumentExistsMiddleware } from '../../rest/middleware/documentExists.j
 import { CreateOfferRequest, FavoriteOfferShortResponse, OfferResponse, UpdateOfferRequest } from './dto.js';
 import { plainToInstance } from 'class-transformer';
 import { ParamsDictionary } from 'express-serve-static-core';
+import { PrivateRouteMiddleware } from '../../rest/middleware/privateRoute.js';
 
 export type ParamsOffer =
   | {
@@ -47,7 +48,7 @@ export default class OfferController extends BaseController {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateCommentRequest)],
+      middlewares: [new PrivateRouteMiddleware(), new ValidateDtoMiddleware(CreateCommentRequest)],
     });
 
     this.addRoute({
@@ -65,6 +66,7 @@ export default class OfferController extends BaseController {
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateOfferRequest),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
@@ -75,7 +77,7 @@ export default class OfferController extends BaseController {
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
-      middlewares: [new ValidateObjectIdMiddleware('offerId')],
+      middlewares: [new PrivateRouteMiddleware(), new ValidateObjectIdMiddleware('offerId')],
     });
 
     this.addRoute({
@@ -89,6 +91,7 @@ export default class OfferController extends BaseController {
       method: HttpMethod.Post,
       handler: this.addFavorite,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -99,6 +102,7 @@ export default class OfferController extends BaseController {
       method: HttpMethod.Delete,
       handler: this.deleteFavorite,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -108,6 +112,7 @@ export default class OfferController extends BaseController {
       path: '/favorites',
       method: HttpMethod.Get,
       handler: this.showFavorites,
+      middlewares: [new PrivateRouteMiddleware()],
     });
   }
 
@@ -149,53 +154,18 @@ export default class OfferController extends BaseController {
     this.ok(res, plainToInstance(OfferResponse, offers, { excludeExtraneousValues: true }));
   }
 
-  public async showFavorites(
-    {
-      body,
-    }: Request<
-      Record<string, unknown>,
-      Record<string, unknown>,
-      {
-        userId: string;
-      }
-    >,
-    _res: Response,
-  ): Promise<void> {
-    const offers = await this.userService.findFavorites(body.userId);
+  public async showFavorites({ user }: Request, _res: Response): Promise<void> {
+    const offers = await this.userService.findFavorites(user.id);
     this.ok(_res, plainToInstance(FavoriteOfferShortResponse, offers, { excludeExtraneousValues: true }));
   }
 
-  public async addFavorite(
-    {
-      body,
-    }: Request<
-      Record<string, unknown>,
-      Record<string, unknown>,
-      {
-        offerId: string;
-        userId: string;
-      }
-    >,
-    res: Response,
-  ): Promise<void> {
-    await this.userService.addToFavoritesById(body.offerId, body.userId);
+  public async addFavorite({ params, user }: Request<ParamsOffer>, res: Response): Promise<void> {
+    await this.userService.addToFavoritesById(params.offerId, user.id);
     this.noContent(res, { message: 'Offer was added to favorite' });
   }
 
-  public async deleteFavorite(
-    {
-      body,
-    }: Request<
-      Record<string, unknown>,
-      Record<string, unknown>,
-      {
-        offerId: string;
-        userId: string;
-      }
-    >,
-    res: Response,
-  ): Promise<void> {
-    await this.userService.removeFromFavoritesById(body.offerId, body.userId);
+  public async deleteFavorite({ params, user }: Request<ParamsOffer>, res: Response): Promise<void> {
+    await this.userService.removeFromFavoritesById(params.offerId, user.id);
     this.noContent(res, { message: 'Offer was removed from favorite' });
   }
 }
