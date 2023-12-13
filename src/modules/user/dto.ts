@@ -27,7 +27,21 @@ export class LoginUserRequest {
   public password!: string;
 }
 
+export class LoginUserResponse {
+  @Expose()
+  public token!: string;
+
+  @Expose()
+  public refreshToken!: string;
+
+  @Expose()
+  public email!: string;
+}
+
 export class UserResponse {
+  @Expose()
+  public id!: string;
+
   @Expose()
   public username!: string;
 

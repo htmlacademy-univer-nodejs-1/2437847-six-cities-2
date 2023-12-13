@@ -3,7 +3,7 @@ import { UserServiceInterface } from './interface.js';
 import { LoggerInterface } from '../../core/logger/logger.interface';
 import { AppComponents } from '../../types/appComponents.js';
 import { UserEntity } from './entity.js';
-import { CreateUserRequest } from './dto.js';
+import { CreateUserRequest, LoginUserRequest } from './dto.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { UserType } from '../../types/enums.js';
 import { ConfigInterface } from '../../core/config/config.interface';
@@ -22,7 +22,7 @@ export default class UserService implements UserServiceInterface {
     const user = new UserEntity({ ...dto, type: UserType.STANDART }, this.config);
     user.setPassword(dto.password);
 
-    const result = await this.userModel.create(dto);
+    const result = await this.userModel.create(user);
     this.logger.info(`New user was created: ${user.email}`);
 
     return result;
@@ -34,7 +34,7 @@ export default class UserService implements UserServiceInterface {
       return [];
     }
 
-    return this.userModel.find({ _id: { $in: offers.favorite } });
+    return this.userModel.find({ _id: { $in: offers.favorite } }).populate('offerId');
   }
 
   public async findByEmail(email: string): Promise<DocumentType<UserEntity> | null> {
@@ -61,5 +61,19 @@ export default class UserService implements UserServiceInterface {
 
   public removeFromFavoritesById(userId: string, offerId: string): Promise<DocumentType<OfferEntity>[] | null> {
     return this.userModel.findByIdAndUpdate(userId, { $pull: { favorite: offerId }, new: true });
+  }
+
+  public async verifyUser(dto: LoginUserRequest): Promise<DocumentType<UserEntity> | null> {
+    const user = await this.findByEmail(dto.email);
+
+    if (!user) {
+      return null;
+    }
+
+    if (user.verifyPassword(dto.password)) {
+      return user;
+    }
+
+    return null;
   }
 }
