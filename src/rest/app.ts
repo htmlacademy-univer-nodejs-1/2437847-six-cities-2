@@ -52,6 +52,7 @@ export default class Application {
   private async _initRoutes() {
     this.server.use('/offers', this.offerController.router);
     this.server.use('/users', this.userController.router);
+    this.server.use('/upload', express.static(this.config.get('UPLOAD_DIRECTORY')));
   }
 
   public async init() {

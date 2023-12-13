@@ -11,11 +11,16 @@ import { HttpMethod } from '../../rest/types/httpMethod.js';
 import { HttpError } from '../../rest/exceptions/httpError.js';
 import { CreateUserRequest, LoginUserRequest } from './dto.js';
 import { OfferResponse } from '../offer/dto.js';
+import { UploadFileMiddleware } from '../../rest/middleware/uploadFile.js';
+import { ValidateObjectIdMiddleware } from '../../rest/middleware/validateObjectId.js';
+import { ConfigInterface } from '../../core/config/config.interface';
+import { RestSchema } from '../../core/config/rest.schema.js';
 
 @injectable()
 export default class UserController extends BaseController {
   constructor(
     @inject(AppComponents.LoggerInterface) logger: LoggerInterface,
+    @inject(AppComponents.ConfigInterface) private readonly config: ConfigInterface<RestSchema>,
     @inject(AppComponents.UserServiceInterface) private readonly userService: UserServiceInterface,
   ) {
     super(logger);
@@ -28,6 +33,15 @@ export default class UserController extends BaseController {
     this.addRoute({ path: '/favorite/:offerId', method: HttpMethod.Post, handler: this.addFavorite });
     this.addRoute({ path: '/favorite/:offerId', method: HttpMethod.Delete, handler: this.deleteFavorite });
     this.addRoute({ path: '/favorite', method: HttpMethod.Get, handler: this.getFavorite });
+    this.addRoute({
+      path: '/:userId/avatar',
+      method: HttpMethod.Post,
+      handler: this.uploadAvatar,
+      middlewares: [
+        new ValidateObjectIdMiddleware('userId'),
+        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
+      ],
+    });
   }
 
   public async register(
@@ -83,5 +97,11 @@ export default class UserController extends BaseController {
   ): Promise<void> {
     await this.userService.removeFromFavoritesById(body.offerId, body.userId);
     this.noContent(res, { message: 'Предложение удалено из избранного' });
+  }
+
+  public async uploadAvatar(req: Request, res: Response) {
+    this.created(res, {
+      filepath: req.file?.path,
+    });
   }
 }
