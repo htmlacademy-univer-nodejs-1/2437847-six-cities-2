@@ -2,7 +2,6 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsBoolean,
-  IsDateString,
   IsEnum,
   IsObject,
   IsOptional,
@@ -28,9 +27,6 @@ export class CreateOfferRequest {
 
   @IsEnum(City, { message: 'type must be one of the city' })
   public city!: City;
-
-  @IsDateString({}, { message: 'postDate must be a valid ISO string' })
-  public publicationDate!: Date;
 
   @IsString({ message: 'preview path is required.' })
   public previewImage!: string;
@@ -91,10 +87,6 @@ export class UpdateOfferRequest {
   @IsArray({ message: 'field images must be an array' })
   @IsString({ each: true, message: 'image path should be string' })
   public images?: string[];
-
-  @IsOptional()
-  @IsDateString({}, { message: 'postDate must be a valid ISO string' })
-  public publicationDate!: Date;
 
   @IsOptional()
   @IsBoolean({ message: 'field premium must be boolean' })
