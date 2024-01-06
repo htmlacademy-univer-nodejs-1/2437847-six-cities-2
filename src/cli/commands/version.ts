@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { ICliCommand } from './interfaces/ICliComand.js';
+import { ICliCommand } from './interfaces/сli-command.interface.js';
 import path from 'node:path';
 import { homedir } from 'node:os';
 

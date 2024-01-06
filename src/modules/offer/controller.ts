@@ -1,20 +1,20 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
-import { AppComponents } from '../../types/appComponents.js';
-import { BaseController } from '../../rest/controller/baseController.js';
+import { AppComponents } from '../../types/app-components.js';
+import { BaseController } from '../../rest/controller/base-controller.js';
 import { LoggerInterface } from '../../core/logger/logger.interface';
 import { OfferServiceInterface } from './interface.js';
 import { UserServiceInterface } from '../user/interface.js';
 import { CommentServiceInterface } from '../comments/interface.js';
-import { HttpMethod } from '../../rest/types/httpMethod.js';
-import { ValidateDtoMiddleware } from '../../rest/middleware/validateRequest.js';
+import { HttpMethod } from '../../rest/types/http-method.js';
+import { ValidateDtoMiddleware } from '../../rest/middleware/validate-request.js';
 import { CreateCommentRequest } from '../comments/dto.js';
-import { ValidateObjectIdMiddleware } from '../../rest/middleware/validateObjectId.js';
-import { DocumentExistsMiddleware } from '../../rest/middleware/documentExists.js';
+import { ValidateObjectIdMiddleware } from '../../rest/middleware/validate-object-id.js';
+import { DocumentExistsMiddleware } from '../../rest/middleware/document-exists.js';
 import { CreateOfferRequest, FavoriteOfferShortResponse, OfferResponse, UpdateOfferRequest } from './dto.js';
 import { plainToInstance } from 'class-transformer';
 import { ParamsDictionary } from 'express-serve-static-core';
-import { PrivateRouteMiddleware } from '../../rest/middleware/privateRoute.js';
+import { PrivateRouteMiddleware } from '../../rest/middleware/private-route.js';
 
 export type ParamsOffer =
   | {

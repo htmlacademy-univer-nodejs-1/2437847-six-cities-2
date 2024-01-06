@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { HttpMethod } from './httpMethod.js';
+import { HttpMethod } from './http-method.js';
 import { MiddlewareInterface } from '../middleware/middleware.interface';
 
 export interface RouteInterface {

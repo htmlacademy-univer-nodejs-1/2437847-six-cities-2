@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
-import { BaseController } from '../../rest/controller/baseController.js';
+import { BaseController } from '../../rest/controller/base-controller.js';
 import { LoggerInterface } from '../../core/logger/logger.interface';
 import { CommentServiceInterface } from './interface.js';
 import { OfferServiceInterface } from '../offer/interface.js';
-import { AppComponents } from '../../types/appComponents.js';
-import { HttpMethod } from '../../rest/types/httpMethod.js';
-import { ValidateDtoMiddleware } from '../../rest/middleware/validateRequest.js';
+import { AppComponents } from '../../types/app-components.js';
+import { HttpMethod } from '../../rest/types/http-method.js';
+import { ValidateDtoMiddleware } from '../../rest/middleware/validate-request.js';
 import CommentResponse, { CreateCommentRequest } from './dto.js';
-import { DocumentExistsMiddleware } from '../../rest/middleware/documentExists.js';
+import { DocumentExistsMiddleware } from '../../rest/middleware/document-exists.js';
 import { plainToInstance } from 'class-transformer';
-import { PrivateRouteMiddleware } from '../../rest/middleware/privateRoute.js';
+import { PrivateRouteMiddleware } from '../../rest/middleware/private-route.js';
 import { ParamsOffer } from '../offer/controller.js';
 
 @injectable()

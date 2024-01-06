@@ -1,4 +1,4 @@
-import { ICliCommand } from './interfaces/ICliComand.js';
+import { ICliCommand } from './interfaces/сli-command.interface.js';
 import chalk from 'chalk';
 import { FileReader } from '../../core/file/file.service.js';
 import { Offer } from '../../types/offer.js';

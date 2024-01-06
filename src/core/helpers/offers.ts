@@ -1,4 +1,4 @@
-import { MockData } from '../../types/mockData.js';
+import { MockData } from '../../types/mock-data.js';
 import { generateRandomNumber, getRandomItem, getRandomItems } from './random.js';
 import { City, Facilities, HousingType, UserType } from '../../types/enums.js';
 import dayjs from 'dayjs';

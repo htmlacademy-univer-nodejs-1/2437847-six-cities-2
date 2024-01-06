@@ -6,10 +6,10 @@ import { RestSchema } from '../core/config/rest.schema.js';
 import ConfigService from '../core/config/config.service.js';
 import { DatabaseClientInterface } from '../core/db.client/db.interface.js';
 import MongoClientService from '../core/db.client/mongo.service.js';
-import { AppComponents } from '../types/appComponents.js';
+import { AppComponents } from '../types/app-components.js';
 import Application from './app.js';
-import ExceptionFilter from './exceptions/exceptionFilter.js';
-import { ExceptionFilterInterface } from './exceptions/exeptionFilter.interface';
+import ExceptionFilter from './exceptions/exception-filter.js';
+import { ExceptionFilterInterface } from './exceptions/exeption-filter.interface';
 
 export function createRestApplicationContainer() {
   const container = new Container();

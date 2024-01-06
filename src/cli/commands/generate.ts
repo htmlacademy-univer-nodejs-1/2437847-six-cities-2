@@ -1,5 +1,5 @@
-import { ICliCommand } from './interfaces/ICliComand.js';
-import { MockData } from '../../types/mockData.js';
+import { ICliCommand } from './interfaces/сli-command.interface.js';
+import { MockData } from '../../types/mock-data.js';
 import { FileWriter } from '../../core/file/file.service.js';
 import { generateOffer } from '../../core/helpers/offers.js';
 import got from 'got';
