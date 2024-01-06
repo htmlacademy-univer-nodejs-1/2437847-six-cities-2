@@ -4,7 +4,7 @@ import { CommentServiceInterface } from './interface.js';
 import { CommentEntity } from './entity.js';
 import { CreateCommentRequest } from './dto.js';
 import { OfferServiceInterface } from '../offer/interface.js';
-import { AppComponents } from '../../types/appComponents.js';
+import { AppComponents } from '../../types/app-components.js';
 import { SortType } from '../common/types.js';
 
 const COMMENTS_COUNT = 50;

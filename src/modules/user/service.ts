@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { UserServiceInterface } from './interface.js';
 import { LoggerInterface } from '../../core/logger/logger.interface';
-import { AppComponents } from '../../types/appComponents.js';
+import { AppComponents } from '../../types/app-components.js';
 import { UserEntity } from './entity.js';
 import { CreateUserRequest, LoginUserRequest } from './dto.js';
 import { DocumentType, types } from '@typegoose/typegoose';

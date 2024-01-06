@@ -3,20 +3,20 @@ import { Request, Response } from 'express';
 
 import { StatusCodes } from 'http-status-codes';
 import { plainToInstance } from 'class-transformer';
-import { BaseController } from '../../rest/controller/baseController.js';
+import { BaseController } from '../../rest/controller/base-controller.js';
 import { LoggerInterface } from '../../core/logger/logger.interface';
 import { UserServiceInterface } from './interface.js';
-import { AppComponents } from '../../types/appComponents.js';
-import { HttpMethod } from '../../rest/types/httpMethod.js';
-import { HttpError } from '../../rest/exceptions/httpError.js';
+import { AppComponents } from '../../types/app-components.js';
+import { HttpMethod } from '../../rest/types/http-method.js';
+import { HttpError } from '../../rest/exceptions/http-error.js';
 import { LoginUserResponse, CreateUserRequest, LoginUserRequest } from './dto.js';
-import { UploadFileMiddleware } from '../../rest/middleware/uploadFile.js';
-import { ValidateObjectIdMiddleware } from '../../rest/middleware/validateObjectId.js';
+import { UploadFileMiddleware } from '../../rest/middleware/upload-file.js';
+import { ValidateObjectIdMiddleware } from '../../rest/middleware/validate-object-id.js';
 import { ConfigInterface } from '../../core/config/config.interface';
 import { RestSchema } from '../../core/config/rest.schema.js';
 import { createJWT } from '../../core/helpers/jwt.js';
 import { BLACK_LIST_TOKENS } from '../../rest/middleware/authenticate.js';
-import { PrivateRouteMiddleware } from '../../rest/middleware/privateRoute.js';
+import { PrivateRouteMiddleware } from '../../rest/middleware/private-route.js';
 
 type LoginUserRequestType = Request<Record<string, unknown>, Record<string, unknown>, LoginUserRequest>;
 

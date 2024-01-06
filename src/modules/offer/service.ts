@@ -3,7 +3,7 @@ import { OfferServiceInterface } from './interface.js';
 import { LoggerInterface } from '../../core/logger/logger.interface';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { OfferEntity } from './entity.js';
-import { AppComponents } from '../../types/appComponents.js';
+import { AppComponents } from '../../types/app-components.js';
 import { CreateOfferRequest, UpdateOfferRequest } from './dto.js';
 import { SortType } from '../common/types.js';
 

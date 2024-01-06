@@ -1,7 +1,7 @@
 import { Container } from 'inversify';
 import { types } from '@typegoose/typegoose';
 import { CommentServiceInterface } from './interface.js';
-import { AppComponents } from '../../types/appComponents.js';
+import { AppComponents } from '../../types/app-components.js';
 import CommentService from './service.js';
 import { CommentEntity, CommentModel } from './entity.js';
 import CommentController from './controller.js';
